@@ -1,4 +1,6 @@
 require 'sinatra'
+require 'data_mapper'
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 get '/' do
   haml :index 

@@ -1,4 +1,7 @@
 require 'sinatra'
+require 'sass'
+require 'haml'
+require 'coffee-script'
 require 'data_mapper'
 require 'json'
 

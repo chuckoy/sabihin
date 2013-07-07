@@ -1,0 +1,4 @@
+$ ->
+  $("button").click( ->
+    false
+  )

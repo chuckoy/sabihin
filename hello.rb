@@ -24,8 +24,17 @@ end
 
 get '/save' do
   content_type :json
-  @message = Message.all
-  @message.to_json
+  message = Message.all
+  message.to_json
+end
+
+post '/save' do
+  message = Message.create(:message => params[:message], :created_at => Time.now)
+  if message.saved?
+    true.to_json
+  else
+    false.to_json
+  end
 end
 
 # Compile Resources

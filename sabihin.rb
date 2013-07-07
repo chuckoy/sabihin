@@ -1,9 +1,9 @@
 require 'sinatra'
 require 'sass'
 require 'haml'
-require 'coffee-script'
 require 'data_mapper'
 require 'json'
+require 'faye'
 
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/sabihin')
 
@@ -32,11 +32,13 @@ get '/save' do
 end
 
 post '/save' do
+  content_type :json
   message = Message.create(:message => params[:message], :created_at => Time.now)
   if message.saved?
-    true.to_json
+    message_to_faye = {message: message.message, created_at: message.created_at}
+    return message_to_faye.to_json
   else
-    false.to_json
+    return false
   end
 end
 
@@ -52,3 +54,8 @@ get '/javascripts/*.js' do
   filename = params[:splat].first
   coffee filename.to_sym, :views => "#{settings.root}/public/javascripts"
 end
+
+#Start Faye Server
+
+use Faye::RackAdapter, :mount => '/faye', :timeout => 25
+Faye::WebSocket.load_adapter('thin')

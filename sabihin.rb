@@ -4,6 +4,7 @@ require 'haml'
 require 'data_mapper'
 require 'json'
 require 'faye'
+require 'sanitize'
 
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/sabihin')
 
@@ -33,7 +34,7 @@ end
 
 post '/save' do
   content_type :json
-  message = Message.create(:message => params[:message], :created_at => Time.now)
+  message = Message.create(:message => Sanitize.clean(params[:message]), :created_at => Time.now)
   if message.saved?
     message_to_faye = {message: message.message, created_at: message.created_at}
     return message_to_faye.to_json

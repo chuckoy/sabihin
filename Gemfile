@@ -9,6 +9,7 @@ gem 'dm-postgres-adapter'
 gem 'json'
 gem 'faye'
 gem 'thin'
+gem 'sanitize'
 
 group :development do
   gem "pry"

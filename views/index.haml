@@ -7,7 +7,7 @@
     %script{:src => "//underscorejs.org/underscore-min.js", :type => "text/javascript"}
     %script{:src => "/vendor/javascripts/moment.min.js", :type => "text/javascript"}
     %script{:src => "/javascripts/submit.js", :type => "text/javascript"}
-    %script{:src => "//sabihinmona.herokuapp.com/faye/client.js", :type => "text/javascript"}
+    %script{:src => "//localhost:4567/faye/client.js", :type => "text/javascript"}
 
     %title #{@title} 
   %body
@@ -19,3 +19,6 @@
           %textarea.pure-input-1-2{:rows => "20"}
         %button.pure-button.pure-input-1-2 Send
     #messages
+
+:javascript
+  set_channel("#{@unparsed_title}")

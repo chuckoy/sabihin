@@ -21,8 +21,17 @@ DataMapper.finalize
 
 Message.auto_upgrade!
 
+# Methods
+
+def parse_title (unparsed_title)
+  unparsed_title.gsub!("_", " ")
+  unparsed_title.capitalize!
+  unparsed_title << '?'
+end
+
 # Routes
 get '/' do
+  @title = "Sabihin mo na."
   haml :index 
 end
 
@@ -41,6 +50,12 @@ post '/save' do
   else
     return false
   end
+end
+
+get '/question/*' do
+  unparsed_title = params[:splat].first
+  @title = parse_title(unparsed_title)
+  haml :index
 end
 
 # Compile Resources

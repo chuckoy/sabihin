@@ -15,32 +15,48 @@ class Message
   property :id, Serial
   property :message, Text
   property :created_at, DateTime
+  property :channel, Text
 end
 
 DataMapper.finalize
 
 Message.auto_upgrade!
 
+# Methods
+
+def parse_title (unparsed_title)
+  unparsed_title.gsub("_", " ").capitalize << '?'
+end
+
 # Routes
 get '/' do
+  @title = "Sabihin mo na."
+  @unparsed_title = "sabihin_mo_na"
   haml :index 
 end
 
-get '/save' do
+get '/save/*' do
   content_type :json
-  message = Message.all
+  channel = params[:splat].first
+  message = Message.all(:channel => channel) 
   message.to_json
 end
 
 post '/save' do
   content_type :json
-  message = Message.create(:message => Sanitize.clean(params[:message]), :created_at => Time.now)
+  message = Message.create(:message => Sanitize.clean(params[:message]), :created_at => Time.now, :channel => params[:channel])
   if message.saved?
     message_to_faye = {message: message.message, created_at: message.created_at}
     return message_to_faye.to_json
   else
     return false
   end
+end
+
+get '/question/*' do
+  @unparsed_title = params[:splat].first
+  @title = parse_title(@unparsed_title)
+  haml :index
 end
 
 # Compile Resources

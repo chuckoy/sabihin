@@ -35,10 +35,11 @@ get '/' do
   haml :index 
 end
 
-get '/save/*' do
+get '/save/:channel/:offset' do
   content_type :json
-  channel = params[:splat].first
-  message = Message.all(:channel => channel) 
+  channel = params[:channel]
+  offset = params[:offset].to_i
+  message = Message.all(:channel => channel, :limit => 10, :order => [:created_at.desc], :offset => offset)
   message.to_json
 end
 

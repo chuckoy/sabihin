@@ -1,5 +1,6 @@
 $ ->
   client = new Faye.Client "http://sabihinmona.herokuapp.com/faye"
+  offset = 0
 
   $("button").click ->
     message = $("textarea").val()
@@ -11,17 +12,28 @@ $ ->
       )
     false
 
-  $.get("/save/#{channel}", (messages) ->
-    _.each messages, (message) ->
-      add_message(message)
-  )
+  get_messages offset
 
   client.subscribe "/#{channel}", (message) ->
-    add_message(message)
+    add_message message, 'before'
 
-add_message = (message) ->
+  $(window).scroll ->
+    if $(window).scrollTop() + $(window).height() == $(document).height()
+      offset += 10 
+      get_messages offset
+
+add_message = (message, where) ->
   parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")
-  $("#messages").prepend "<p>#{message.message} <small>#{parsed_date}</small></p>"
+  if where == 'before'
+    $("#messages").prepend "<p>#{message.message} <small>#{parsed_date}</small></p>"
+  else
+    $("#messages").append "<p>#{message.message} <small>#{parsed_date}</small></p>"
 
 window.set_channel = (channel) ->
   window.channel = channel
+
+get_messages = (offset) ->
+  $.get("/save/#{channel}/#{offset}", (messages) ->
+    _.each messages, (message) ->
+      add_message message, 'after'
+  )

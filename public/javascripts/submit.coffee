@@ -23,11 +23,8 @@ $ ->
       get_messages offset
 
 add_message = (message, where) ->
-  parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")
-  if where == 'before'
-    $("#messages").prepend "<p>#{message.message} <small>#{parsed_date}</small></p>"
-  else
-    $("#messages").append "<p>#{message.message} <small>#{parsed_date}</small></p>"
+  formatted_message = format_message message
+  if where == 'before' then $("#messages").prepend formatted_message else $("#messages").append formatted_message
 
 window.set_channel = (channel) ->
   window.channel = channel
@@ -37,3 +34,9 @@ get_messages = (offset) ->
     _.each messages, (message) ->
       add_message message, 'after'
   )
+
+format_message = (message) ->
+  parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")
+  text = message.message.replace /(#[\w]+)/g, "<a class='hashtag'>$1</a>"
+  display = $("<p>#{text} <small>#{parsed_date}</small></p>")
+  display.linkify()

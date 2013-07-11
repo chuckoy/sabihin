@@ -42,5 +42,12 @@ get_messages = (offset) ->
 format_message = (message) ->
   parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")
   text = message.message.replace /(#[\w]+)/g, "<a class='hashtag'>$1</a>"
-  display = $("<p>#{text} <small>#{parsed_date}</small></p>")
+  display = $("<p>#{text}</p>")
   display.linkify()
+  display.jTruncate({
+    moreText: 'more',
+    lessText: 'less',
+    moreAni: null,
+    lessAni: null
+  })
+  display.append(" <small>#{parsed_date}</small>")

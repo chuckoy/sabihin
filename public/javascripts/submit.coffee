@@ -7,6 +7,7 @@ $ ->
     if message.length > 0
       $(".pure-button").addClass("pure-button-disabled")
       $(".pure-button").text("Sending...")
+      message = message.replace /\<3/g, '♥'
       $.post('/save', {message: message, channel: channel}).done( (data) ->
         if data
           client.publish "/#{channel}", data

@@ -5,10 +5,14 @@ $ ->
   $("button").click ->
     message = $("textarea").val()
     if message.length > 0
+      $(".pure-button").addClass("pure-button-disabled")
+      $(".pure-button").text("Sending...")
       $.post('/save', {message: message, channel: channel}).done( (data) ->
-        if data 
+        if data
           client.publish "/#{channel}", data
           $("textarea").val("")
+          $(".pure-button").removeClass("pure-button-disabled")
+          $(".pure-button").text("Send")
       )
     false
 

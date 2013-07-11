@@ -19,7 +19,7 @@ $ ->
 
   $(window).scroll ->
     if $(window).scrollTop() + $(window).height() == $(document).height()
-      offset += 20
+      offset += 10
       get_messages offset
 
   $("#loader").hide()

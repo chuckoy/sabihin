@@ -36,8 +36,8 @@ get_messages = (offset) ->
   $.get("/save/#{channel}/#{offset}", (messages) ->
     _.each messages, (message) ->
       add_message message, 'after'
+    $("#loader").hide()
   )
-  $("#loader").hide()
 
 format_message = (message) ->
   parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")

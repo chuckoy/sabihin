@@ -22,6 +22,8 @@ $ ->
       offset += 10 
       get_messages offset
 
+  $("#loader").hide()
+
 add_message = (message, where) ->
   formatted_message = format_message message
   if where == 'before' then $("#messages").prepend formatted_message else $("#messages").append formatted_message
@@ -30,10 +32,12 @@ window.set_channel = (channel) ->
   window.channel = channel
 
 get_messages = (offset) ->
+  $("#loader").show()
   $.get("/save/#{channel}/#{offset}", (messages) ->
     _.each messages, (message) ->
       add_message message, 'after'
   )
+  $("#loader").hide()
 
 format_message = (message) ->
   parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")

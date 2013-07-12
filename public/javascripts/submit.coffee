@@ -1,6 +1,6 @@
+offset = 0
 $ ->
   client = new Faye.Client "http://sabihinmona.herokuapp.com/faye"
-  offset = 0
 
   $("button").click ->
     message = $("textarea").val()
@@ -31,7 +31,11 @@ $ ->
 
 add_message = (message, where) ->
   formatted_message = format_message message
-  if where == 'before' then $("#messages").prepend formatted_message else $("#messages").append formatted_message
+  if where == 'before'
+    $("#messages").prepend formatted_message
+    offset += 20
+  else
+    $("#messages").append formatted_message
 
 window.set_channel = (channel) ->
   window.channel = channel

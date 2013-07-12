@@ -60,3 +60,4 @@ format_message = (message) ->
     lessAni: null
   })
   display.append(" <small>#{parsed_date}</small>")
+  display.append(" <small><a href='#' class='copy'>Copy</a></small>")

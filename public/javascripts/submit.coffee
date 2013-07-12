@@ -59,4 +59,5 @@ format_message = (message) ->
     moreAni: null,
     lessAni: null
   })
-  display.append(" <small>#{parsed_date}</small>")
+  display.append " <small>#{parsed_date}</small>"
+  display.append " <span><a href='#' class='copy'>Copy</a></span>"

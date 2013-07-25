@@ -53,11 +53,5 @@ format_message = (message) ->
   text = message.message.replace /(#[\w]+)/g, "<a class='hashtag'>$1</a>"
   display = $("<p>#{text}</p>")
   display.linkify()
-  display.jTruncate({
-    moreText: 'more',
-    lessText: 'less',
-    moreAni: null,
-    lessAni: null
-  })
   display.append " <small>#{parsed_date}</small>"
   display.append " <span><a href='#' class='copy'>Copy</a></span>"

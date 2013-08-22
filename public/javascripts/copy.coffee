@@ -1,6 +1,6 @@
 $ ->
   $("#messages").on('click', 'a.copy', ->
-    text = $(this).parent().parent().html()
+    text = $(this).parent().parent().text()
     formatted_text = format_text text
     $("textarea").val($("textarea").val() + " " + formatted_text)
     false

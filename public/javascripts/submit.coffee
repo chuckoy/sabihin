@@ -50,8 +50,8 @@ get_messages = (offset) ->
 
 format_message = (message) ->
   parsed_date = moment(message.created_at).format("MM/DD/YY HH:mm")
-  text = message.message.replace /(#[\w]+)/g, "<a class='hashtag'>$1</a>"
-  display = $("<p>").text(text)
+  display = $("<p>").text(message.message)
+  display.html(display.html().replace /(#[\w]+)/g, "<a class='hashtag'>$1</a>")
   display.linkify({target: "_blank"})
   display.append " <small>#{parsed_date}</small>"
   display.append " <span><a href='#' class='copy'>Copy</a></span>"

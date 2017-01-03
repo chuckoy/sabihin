@@ -2,20 +2,25 @@ offset = 0
 $ ->
   client = new Faye.Client "http://sabihinmona.herokuapp.com/faye"
 
-  $("button").click ->
+  submitMessage = ->
     message = $("textarea").val()
-    if message.length > 0
-      $(".pure-button").addClass("pure-button-disabled")
-      $(".pure-button").text("Sending...")
-      message = message.replace /\<3/g, '♥'
-      $.post('/save', {message: message, channel: channel}).done( (data) ->
-        if data
-          client.publish "/#{channel}", data
-          $("textarea").val("")
-          $(".pure-button").removeClass("pure-button-disabled")
-          $(".pure-button").text("Send")
-      )
-    false
+      if message.length > 0
+        $(".pure-button").addClass("pure-button-disabled")
+        $(".pure-button").text("Sending...")
+        message = message.replace /\<3/g, '♥'
+        $.post('/save', {message: message, channel: channel}).done( (data) ->
+          if data
+            client.publish "/#{channel}", data
+            $("textarea").val("")
+            $(".pure-button").removeClass("pure-button-disabled")
+            $(".pure-button").text("Send")
+        )
+      false
+
+  $("button").click -> submitMessage
+  $("textarea").keydown (e) ->
+    if e.ctrlKey && e.keyCode == 13
+      submitMessage
 
   get_messages offset
 
